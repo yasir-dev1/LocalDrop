@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "localdrop"
+version = "0.1.0"
+description = "P2P CLI tool that allows users on the same local network to share text/files via terminal."
+authors = ["yasir-dev1"]
+license = "mMIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click  = "8.1.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+localdrop = "localdrop:cli"
