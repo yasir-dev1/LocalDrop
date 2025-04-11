@@ -6,6 +6,7 @@ import time
 import json
 import subprocess
 import itertools
+import cilent
 
 def encrypt(message, key):
     if len(key) != 4:
@@ -53,7 +54,7 @@ def init():
     if not os.path.exists('message.json'):
         with open('message.json', 'w') as file:
             file.write("{}")
-    subprocess.Popen(['cmd', '/c', 'start pythonw ./host.py'])
+    subprocess.Popen(['cmd', '/c', 'start pythonw ./sender.py'])
 
 @click.command()
 @click.argument('message')
@@ -71,9 +72,18 @@ def send(message):
         with open('message.json', 'w') as file:
             json.dump(message_dict, file, ensure_ascii=False, indent=4)
 
+@click.command()
+@click.argument('code')
+def get(code):
+    message = cilent.get_message_from_sender(code)
+    if message:
+        print(f"Decrypted message: {message}")
+    else:
+        print("No message found for the given code.")
 
 cli.add_command(init)
 cli.add_command(send)
+cli.add_command(get)
 
 if __name__ == "__main__":
     cli()
