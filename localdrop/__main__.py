@@ -6,7 +6,7 @@ import time
 import json
 import subprocess
 import itertools
-import cilent
+from . import cilent
 
 def encrypt(message, key):
     if len(key) != 4:
@@ -23,10 +23,9 @@ def encrypt(message, key):
         if char.isalpha():
             current_key_char = key[key_index % 4]
             
-            # Calculate shift value from key character
             if current_key_char.isupper():
                 key_shift = ord(current_key_char) - ord('A')
-            else:  # digit
+            else:
                 key_shift = int(current_key_char)
             
             if char.islower():
@@ -77,7 +76,7 @@ def send(message):
 def get(code):
     message = cilent.get_message_from_sender(code)
     if message:
-        print(f"Decrypted message: {message}")
+        print(f"{message}")
     else:
         print("No message found for the given code.")
 

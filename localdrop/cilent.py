@@ -51,7 +51,6 @@ def get_message_from_sender(code):
 
             if  message not in seen_messeages:
                 if message[0] == code[0]:
-                    print(f"Received message: {message[1:]}")
                     decrypted_message = decrypt(message[1:], code)
                     break
                 else:

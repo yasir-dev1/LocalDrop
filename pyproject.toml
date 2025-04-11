@@ -1,18 +1,16 @@
-[tool.poetry]
+[project]
 name = "localdrop"
-version = "0.1.0"
-description = "P2P CLI tool that allows users on the same local network to share text/files via terminal."
-authors = ["yasir-dev1"]
-license = "mMIT"
+version = "0.1.2"
+description = "Local file sharing tool"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-click  = "8.1.8"
+authors = [
+  { name="yasir-dev1",email="yasireposta3@gmail.com"}
+]
+license = { text = "MIT" }
+dependencies = [
+    "click",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-localdrop = "localdrop:cli"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
