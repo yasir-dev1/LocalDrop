@@ -27,7 +27,7 @@ pip install localdrop
 ### 1. Initialize the sender server:
 
 ```bash
-localdrop init
+python -m localdrop init
 ```
 
 This command starts the sender server on your device.
@@ -37,7 +37,7 @@ This command starts the sender server on your device.
 ### 2. Send a message:
 
 ```bash
-localdrop send "Hello world!"
+python -m localdrop send "Hello world!"
 ```
 
 You will receive a **4-character code**. Example:
@@ -53,7 +53,7 @@ Your Code is : 7G4K
 Any user on the same LAN can run:
 
 ```bash
-localdrop get 7G4K
+python -m localdrop get 7G4K
 ```
 
 And the message will be displayed:
