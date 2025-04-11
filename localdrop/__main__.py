@@ -6,7 +6,7 @@ import time
 import json
 import subprocess
 import itertools
-import cilent
+from . import cilent
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))  
