@@ -8,8 +8,7 @@ import subprocess
 import itertools
 from . import cilent
 
-
-current_dir = os.path.dirname(os.path.abspath(__file__))  
+current_dir = os.path.dirname(os.path.abspath(__file__))
 messages_path = os.path.join(current_dir, 'message.json')  
 
 def encrypt(message, key):
@@ -46,6 +45,32 @@ def encrypt(message, key):
 def generate_code(message):
     characters = string.ascii_uppercase + string.digits
     return ''.join(random.choice(characters) for _ in range(4))
+
+
+def check_and_kill_script():
+    script_name = "sender.py"
+    current_pid = os.getpid()
+    if os.name == 'nt':
+        try:
+            command = 'wmic process where "name=\'pythonw.exe\'" get commandline, processid'
+            output = subprocess.check_output(command, shell=True).decode('utf-8', errors='ignore')
+            pids = []
+            for line in output.split('\n'):
+                if script_name in line and str(current_pid) not in line:
+                    parts = line.strip().split()
+                    if len(parts) >= 2:
+                        pids.append(parts[-1])
+            
+            if pids:
+                for pid in pids:
+                    subprocess.run(['taskkill', '/F', '/PID', pid], shell=True)
+                    print(f"LocalDrop sender stopped with")
+            else:
+                print("No LocalDrop sender process found.")
+        except Exception as e:
+            print(f"Error: {e}")
+    else:
+        sys.exit(1)
 
 
 @click.group()
@@ -87,9 +112,14 @@ def get(code):
     else:
         print("No message found for the given code.")
 
+@click.command()
+def stop():
+    check_and_kill_script()
+
 cli.add_command(init)
 cli.add_command(send)
 cli.add_command(get)
+cli.add_command(stop)
 
 if __name__ == "__main__":
     cli()
