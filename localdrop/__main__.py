@@ -6,7 +6,11 @@ import time
 import json
 import subprocess
 import itertools
-from . import cilent
+import cilent
+
+
+current_dir = os.path.dirname(os.path.abspath(__file__))  
+messages_path = os.path.join(current_dir, 'message.json')  
 
 def encrypt(message, key):
     if len(key) != 4:
@@ -50,15 +54,18 @@ def cli():
 
 @click.command()
 def init():
-    if not os.path.exists('message.json'):
-        with open('message.json', 'w') as file:
+    current_dir = os.path.dirname(os.path.abspath(__file__))  
+    messages_path = os.path.join(current_dir, 'message.json')  
+    if not os.path.exists(messages_path):
+        with open(messages_path, 'w') as file:
             file.write("{}")
-    subprocess.Popen(['cmd', '/c', 'start pythonw ./sender.py'])
+    sender_path = os.path.join(current_dir, 'sender.py')
+    subprocess.Popen(['cmd', '/c', f'start pythonw {sender_path}'])
 
 @click.command()
 @click.argument('message')
 def send(message):
-    if not os.path.exists('message.json'):
+    if not os.path.exists(messages_path):
         print("Please initialize the LocalDrop Using 'localdrop init' first.")
     else:
         code = generate_code(message)
@@ -68,7 +75,7 @@ def send(message):
             "message": code[0]+encrypt(message, c),
         }
         print(f"Your Code: {code}")
-        with open('message.json', 'w') as file:
+        with open(messages_path, 'w') as file:
             json.dump(message_dict, file, ensure_ascii=False, indent=4)
 
 @click.command()

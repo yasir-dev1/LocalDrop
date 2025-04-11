@@ -6,9 +6,14 @@ import os
 BROADCAST_IP = '255.255.255.255'
 PORT = 50000
 
+current_dir = os.path.dirname(os.path.abspath(__file__))  
+messages_path = os.path.join(current_dir, 'message.json')  
+
+
+
 while True:
     try:
-        with open('message.json', 'r') as file:
+        with open(messages_path, 'r') as file:
             content = file.read().strip()
             if not content:
                 continue  
@@ -19,7 +24,7 @@ while True:
         pass
     else:
         if time.time() > message.get('expireTime', 0):
-            with open('message.json', 'w') as file:
+            with open(messages_path, 'w') as file:
                 file.write("{}")
         else:
             print(f"Sending message... {message.get('message')}")
