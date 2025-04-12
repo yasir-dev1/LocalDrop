@@ -64,6 +64,13 @@ Hello world!
 
 ---
 
+## 4. For close the sender server:
+```bash
+python -m localdrop stop
+```
+
+---
+
 ## 📁 File Sharing (Coming Soon)
 
 Currently, only text messages are supported. File sharing will be added in an upcoming update.
