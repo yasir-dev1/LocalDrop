@@ -10,7 +10,7 @@
 - 🌐 LAN-based fast communication
 - 📥 Receive messages using short codes
 - 📤 Send messages with auto-generated codes
-- 📂 File sharing coming soon!
+- 💻 Cross-platform support (Windows, macOS, Linux)
 
 ---
 
