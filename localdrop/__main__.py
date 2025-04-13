@@ -6,6 +6,7 @@ import time
 import json
 import subprocess
 import itertools
+import sys
 from . import cilent
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -64,11 +65,32 @@ def check_and_kill_script():
             if pids:
                 for pid in pids:
                     subprocess.run(['taskkill', '/F', '/PID', pid], shell=True)
-                    print(f"LocalDrop sender stopped with")
+                    print(f"LocalDrop sender stopped")
             else:
                 print("No LocalDrop sender process found.")
         except Exception as e:
             print(f"Error: {e}")
+    elif os.name == 'posix':  # Linux veya macOS
+        try:
+            ps_output = subprocess.check_output(['ps', 'aux']).decode()
+            pids = set()
+            for line in ps_output.split('\n'):
+                if 'python3' in line and script_name in line:
+                    parts = line.split()
+                    pid = parts[1]
+                    if pid != str(current_pid):
+                        pids.add(pid)
+            
+            if pids:
+                for pid in pids:
+                    subprocess.run(['kill', '-9', pid])
+                    print(f"LocalDrop sender stopped")
+            else:
+                print("No LocalDrop sender process found.")
+
+
+        except Exception as e:
+            print(f"Hata oluştu: {str(e)}")
     else:
         sys.exit(1)
 
@@ -85,7 +107,10 @@ def init():
         with open(messages_path, 'w') as file:
             file.write("{}")
     sender_path = os.path.join(current_dir, 'sender.py')
-    subprocess.Popen(['cmd', '/c', f'start pythonw {sender_path}'])
+    if sys.platform.startswith('win'):
+        subprocess.Popen(['cmd', '/c', f'start "" python {sender_path}'], shell=True)
+    else:
+        subprocess.Popen(['python3', sender_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 @click.command()
 @click.argument('message')
