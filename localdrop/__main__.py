@@ -9,6 +9,7 @@ import itertools
 import sys
 from . import cilent
 
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 messages_path = os.path.join(current_dir, 'message.json')  
 
@@ -107,8 +108,8 @@ def init():
         with open(messages_path, 'w') as file:
             file.write("{}")
     sender_path = os.path.join(current_dir, 'sender.py')
-    if sys.platform.startswith('win'):
-        subprocess.Popen(['cmd', '/c', f'start "" python {sender_path}'], shell=True)
+    if os.name == 'nt':
+        subprocess.Popen(['cmd', '/c', f'start pythonw {sender_path}'])
     else:
         subprocess.Popen(['python3', sender_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
